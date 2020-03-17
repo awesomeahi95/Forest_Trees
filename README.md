@@ -12,17 +12,17 @@ The porpuse of our analysis is to determine a model based on those cartographica
 
 The steps to follow are :
 
-Data understanding
-Data visualization
-Data preparation
-Modeling
-Baseline Model via Logistic Regression
-Decition tree
-Random Forest
-Ensemble methods
-Adaboost
-Stackking
-Model selection
-Threshold Selection
-Final Evaluation
+1. Data understanding
+2. Data visualization
+3. Data preparation
+4. Modeling
+  - Baseline Model via Logistic Regression
+  - Decition tree
+  - Random Forest
+  - Ensemble methods
+  - Adaboost
+  - Stackking
+5. Model selection
+6. Threshold Selection
+7. Final Evaluation
 ​
