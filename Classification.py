@@ -208,7 +208,7 @@ class Classification():
     def get_scores(self,param_grid,cv_type):
         
         """
-        Performs a gridsearch cross validation with for given hyperparameters and data.
+        Performs a gridsearch cross validation with given hyperparameters and data.
         Gets a ROC AUC score for given data and creates a dataframe containing scores.
 
         Parameters
