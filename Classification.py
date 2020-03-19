@@ -2,9 +2,6 @@ from IPython.display import display
 from IPython.display import Image
 import pydotplus
 from sklearn.externals.six import StringIO 
-from subprocess import call
-import warnings
-warnings.filterwarnings('ignore')
 import numpy as np
 import pandas as pd
 import itertools
@@ -12,15 +9,13 @@ import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 import seaborn as sns
 from sklearn.svm import SVC
-from sklearn.metrics import confusion_matrix, roc_curve, roc_auc_score, classification_report 
-from sklearn.ensemble import VotingClassifier, BaggingClassifier, AdaBoostClassifier, RandomForestClassifier, StackingClassifier
-from xgboost.sklearn import XGBClassifier
-from sklearn.model_selection import train_test_split, GridSearchCV, StratifiedKFold
+from sklearn.metrics import confusion_matrix, roc_curve, roc_auc_score 
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import GridSearchCV, StratifiedKFold
 from sklearn import tree
 from sklearn.tree import export_graphviz
 from sklearn.tree import DecisionTreeClassifier
-from sklearn.linear_model import LogisticRegression, LinearRegression
-from sklearn.preprocessing import StandardScaler, LabelEncoder, OneHotEncoder
+from sklearn.linear_model import LogisticRegression
 from yellowbrick.model_selection import feature_importances
 
 #===============================================================================================#
@@ -30,7 +25,31 @@ from yellowbrick.model_selection import feature_importances
 #===============================================================================================#
 
 class Classification():
+    
+    """
+    This class is for performing classifcation algorithms such as Logistic Regression, Decision Tree, Random Forest, and SVM.
+    
+    Parameters
+    ----------
+    model_type: 'Logistic Regression', 'Decision Tree', 'Random Forest', 'SVM'
+    the type of classifcation algorithm you would like to apply 
+    
+    x_train: dataframe
+    the independant variables of the training data
+    
+    x_val: dataframe
+    the independant variables of the validation data
+    
+    y_train: series
+    the target variable of the training data
+    
+    y_val: series
+    the target variable of the validation data
+    
+    """
+    
     def __init__(self,model_type,x_train,x_val,y_train,y_val):
+
         self.model_type = model_type
         self.x_train = x_train
         self.y_train = y_train
@@ -48,7 +67,7 @@ class Classification():
             self.technique = RandomForestClassifier(n_estimators=20,n_jobs=-1,random_state=42)
         elif self.model_type == "SVM":
             self.technique = SVC()
-                
+            
 #===============================================================================================#
 
 # Score Function
@@ -56,6 +75,33 @@ class Classification():
 #===============================================================================================#
 
     def scores(self,model,X_train,X_val,y_train,y_val):
+        
+        """
+        Gets a ROC AUC score for given data and creates a dataframe containing scores.
+
+        Parameters
+        ----------
+        model: 
+        the type of classifcation applied
+
+        x_train: dataframe
+        the independant variables of the training data
+
+        x_val: dataframe
+        the independant variables of the validation data
+
+        y_train: series
+        the target variable of the training data
+
+        y_val: series
+        the target variable of the validation data
+        
+        Returns
+        ----------
+        scores_table: a dataframe with the model used, the train AUC score and the validation AUC score
+
+        """
+        
         train_prob = model.predict_proba(X_train)[:,1]
 
         val_prob = model.predict_proba(X_val)[:,1]
@@ -80,6 +126,23 @@ class Classification():
 #===============================================================================================#
 
     def annot(fpr,tpr,thr):
+        
+        """
+        Creates an annotation for ROC plot.
+
+        Parameters
+        ----------
+        fpr: numpy array 
+        false positive rates for ROC 
+        
+        tpr: numpy array 
+        true positive rates for ROC 
+        
+        thr: numpy array 
+        threshold values for ROC 
+
+        """
+        
         k=0
         for i,j in zip(fpr,tpr):
             if k % 500 == 0:
@@ -93,6 +156,29 @@ class Classification():
 #===============================================================================================#
      
     def roc_plot(self,model,X_train,X_val,y_train,y_val):
+        
+        """
+        Creates a ROC plot.
+
+        Parameters
+        ----------
+        model: 
+        the type of classifcation applied
+
+        x_train: dataframe
+        the independant variables of the training data
+
+        x_val: dataframe
+        the independant variables of the validation data
+
+        y_train: series
+        the target variable of the training data
+
+        y_val: series
+        the target variable of the validation data
+
+        """
+        
         train_prob = model.predict_proba(X_train)[:,1]
         val_prob = model.predict_proba(X_val)[:,1]
         plt.figure(figsize=(7,7))
@@ -115,11 +201,26 @@ class Classification():
 
 #===============================================================================================#
 
-# Get Scores Function -> Outputs a DataFrame with optimum AUC scores and R^2 scores, and a ROC Plot
+# Get Scores Function
 
 #===============================================================================================#
 
     def get_scores(self,param_grid,cv_type):
+        
+        """
+        Performs a gridsearch cross validation with for given hyperparameters and data.
+        Gets a ROC AUC score for given data and creates a dataframe containing scores.
+
+        Parameters
+        ----------
+        param_grid: dictionary 
+        specified hyperparameters for chosen classification algorithm to be passed through gridsearch cross validation
+        
+        cv_type: 'skf'
+        the type of cross validation split to be used for gridsearch
+
+        """
+        
         reg = self.technique
         fit_reg = reg.fit(self.x_train,self.y_train)
         opt_model = GridSearchCV(fit_reg,
@@ -148,6 +249,12 @@ class Classification():
 #===============================================================================================#
 
     def opt_plots(self):
+        
+        """
+        Creates an optimum hyperparameter heatmap plot for decision trees and random forests.
+
+        """
+        
         if self.model_type == "Decision Tree" or self.model_type == "Random Forest":
             opt = pd.DataFrame(self.opt_model.cv_results_)
             cols = [col for col in opt.columns if ('mean' in col or 'std' in col) and 'time' not in col]
@@ -171,6 +278,24 @@ class Classification():
 #===============================================================================================#
 
     def conf_matrix(self,y_true, y_pred):
+        
+        """
+        Create a confusion matrix.
+
+        Parameters
+        ----------
+        y_true: series 
+        containing the target variable of the validation data
+        
+        y_pred: series 
+        containing the predicted values of the target variable
+
+        Returns
+        ----------
+        scores_table: a confusion matrix
+
+        """
+        
         cm = {'TP': 0, 'TN': 0, 'FP': 0, 'FN': 0}
 
         for ind, label in enumerate(y_true):
@@ -195,6 +320,12 @@ class Classification():
 #===============================================================================================#
     
     def show_conf_matrix(self):
+        
+        """
+        Displays a graphic confusion matrix.
+
+        """
+            
         Classification.conf_matrix(self,self.y_val,self.y_validated)
         cnf_matrix = confusion_matrix(self.y_val,self.y_validated)
         self.cnf_matrix = cnf_matrix
@@ -224,6 +355,12 @@ class Classification():
 #===============================================================================================#
 
     def plot_decision_tree(self):
+               
+        """
+        Displays a graphic confusion matrix.
+
+        """
+        
         if self.model_type == "Decision Tree":
             dot_data = StringIO()
             export_graphviz(self.best_model, out_file=dot_data,  
@@ -248,6 +385,24 @@ class Classification():
 #===============================================================================================#
    
     def get_feature_importances(self):
+        
+        """
+        Create a confusion matrix.
+
+        Parameters
+        ----------
+        y_true: series 
+        containing the target variable of the validation data
+        
+        y_pred: series 
+        containing the predicted values of the target variable
+
+        Returns
+        ----------
+        scores_table: a confusion matrix
+
+        """
+            
         self.feature_importances = pd.DataFrame(self.best_model.feature_importances_,
                                                 index = self.x_train.columns,
                                                 columns=['Importance']).sort_values('Importance',ascending =False)
@@ -260,6 +415,21 @@ class Classification():
 #===============================================================================================#
 
     def get_test_scores(self,X_test,y_test):
+        
+        """
+        Gets a ROC AUC score for given data and creates a dataframe containing scores.
+        Creates a ROC plot.
+
+        Parameters
+        ----------
+        x_test: dataframe 
+        independant variables of the test data
+        
+        y_test: dataframe 
+        target variable of the test data
+
+        """
+            
         self.y_test = y_test
         self.x_test = X_test
         self.scores = Classification.scores(self,self.best_model,self.x_train,self.x_test,self.y_train,self.y_test)
@@ -276,6 +446,12 @@ class Classification():
 #===============================================================================================#
 
     def show_test_conf_matrix(self):
+       
+        """
+        Displays a graphic confusion matrix for test data.
+
+        """
+        
         Classification.conf_matrix(self,self.y_val,self.y_tested)
         cnf_matrix = confusion_matrix(self.y_test,self.y_tested)
         self.cnf_matrix = cnf_matrix
@@ -303,16 +479,37 @@ class Classification():
 # Optimal Threshold Calculator Function
 
 #===============================================================================================#       
-    def threshold_calculator(self):
+    
+    def threshold_calculator(self,CTP,CFP,CTN,CFN):
+        
+        """
+        Calulates the best threshold for given the model and the costs.
+
+        Parameters
+        ----------
+        CTP: float or int
+        cost of true positives
+        
+        CFP: float or int
+        cost of false positives
+        
+        CTN: float or int
+        cost of true negatives
+        
+        CFN: float or int
+        cost of false negatives
+
+        Returns
+        ----------
+        scores_table: a dataframe with the threshold, FPR, TPR, and fm value (in descending order)
+
+        """
+        
         TP = self.cm_values['TP']
         FP = self.cm_values['FP']
         TN = self.cm_values['TN']
         FN = self.cm_values['FN']
         Prevalance = (TP + FP)/(TP+FP+TN+FN)
-        CTP = -100
-        CFP = 200
-        CTN = 0
-        CFN = 0
         m = ((1-Prevalance)/Prevalance) * ( (CFP - CTN) / (CFN - CTP) )
         fm = []
         for i,row in self.threshold_df.iterrows():

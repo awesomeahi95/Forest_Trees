@@ -16,23 +16,23 @@ The purpose of our analysis is to determine a model based on those categorical f
 2. Data Visualization
 3. Data Preparation
 4. Modelling
-  - Baseline Model via Logistic Regression
-  - Optimised Logistic Regression
-  - Optimised Decision Tree
-  - Optimised Random Forest
-  - Adaboost
-  - XGBoost
-  - Voting
-  - Stacking
+   - Baseline Model via Logistic Regression
+   - Optimised Logistic Regression
+   - Optimised Decision Tree
+   - Optimised Random Forest
+   - Adaboost
+   - XGBoost
+   - Voting
+   - Stacking
 5. Model Selection
 6. Threshold Selection
 7. Evaluation
 
 ## Contents of Repository
-- Superseded        ->   Folder containing previous work
-- Classification.py ->   Python file with classifcation class utilised in index.ipynb
-- Ensemble.py       ->   Python file with ensemble class utilised in index.ipynb
-- Fores_trees.pdf   ->   PDF containing project presentation
-- READMEmd          ->   Markdown file with executive summay of project
-- covtype.csv       ->   CSV file with data used for project
-- index.ipynb       ->   Python Notebook containing main conent for project (code,visualisations,modelling,evaluation)
+- ``Superseded  ``       :   Folder containing previous work
+- ``Classification.py `` :   Python file with classifcation class utilised in index.ipynb
+- ``Ensemble.py  ``      :   Python file with ensemble class utilised in index.ipynb
+- ``Fores_trees.pdf ``   :   PDF containing project presentation
+- ``READMEmd  ``         :   Markdown file with executive summay of project
+- ``covtype.csv  ``      :   CSV file with data used for project
+- ``index.ipynb   ``     :   Python Notebook containing main conent for project (code,visualisations,modelling,evaluation)

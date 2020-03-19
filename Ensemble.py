@@ -1,28 +1,8 @@
 from Classification import Classification
-from IPython.display import display
-from IPython.display import Image
-import pydotplus
-from sklearn.externals.six import StringIO 
-from subprocess import call
-import warnings
-warnings.filterwarnings('ignore')
-import numpy as np
 import pandas as pd
-import itertools
-import matplotlib.pyplot as plt
-import matplotlib.image as mpimg
-import seaborn as sns
-from sklearn.svm import SVC
-from sklearn.metrics import confusion_matrix, roc_curve, roc_auc_score, classification_report 
-from sklearn.ensemble import VotingClassifier, BaggingClassifier, AdaBoostClassifier, RandomForestClassifier, StackingClassifier
+from sklearn.ensemble import VotingClassifier, BaggingClassifier, AdaBoostClassifier, StackingClassifier
 from xgboost.sklearn import XGBClassifier
-from sklearn.model_selection import train_test_split, GridSearchCV, StratifiedKFold
-from sklearn import tree
-from sklearn.tree import export_graphviz
-from sklearn.tree import DecisionTreeClassifier
-from sklearn.linear_model import LogisticRegression, LinearRegression
-from sklearn.preprocessing import StandardScaler, LabelEncoder, OneHotEncoder
-from yellowbrick.model_selection import feature_importances
+
 #===============================================================================================#
 
 # Ensemble Models Class
@@ -30,6 +10,31 @@ from yellowbrick.model_selection import feature_importances
 #===============================================================================================#
 
 class Ensemble(Classification):
+    
+    """
+    This class is for performing ensemble algorithms such as voting, adaboost, xgboost, or stacking.
+    
+    Parameters
+    ----------
+    ensemble_method: 'Voting', 'AdaBoost', 'XGBoost', 'Stacking'
+    the type of ensemble algorithm you would like to apply
+    
+    estimators: list
+    the classifcation models to be used by the ensemble algorithm
+    
+    x_train: dataframe
+    the independant variables of the training data
+    
+    x_val: dataframe
+    the independant variables of the validation data
+    
+    y_train: series
+    the target variable of the training data
+    
+    y_val: series
+    the target variable of the validation data
+    
+    """
     
     def __init__(self, ensemble_method, estimators, X_train, X_val, y_train, y_val):
         
@@ -49,4 +54,3 @@ class Ensemble(Classification):
             self.technique = XGBClassifier(n_jobs=-1)
         elif self.ensemble_method == "Stacking":
             self.technique = StackingClassifier(estimators)
-            
