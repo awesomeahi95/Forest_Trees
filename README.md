@@ -1,4 +1,4 @@
-# Forest_Trees
+# Forest Trees
 
 This project is a collaboration between Ahilan and Abigail Sixto.
 
