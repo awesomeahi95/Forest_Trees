@@ -29,7 +29,7 @@ The purpose of our analysis is to determine a model based on those categorical f
 7. Evaluation
 
 ## Contents of Repository
-- ``Superseded  ``       :   Folder containing previous work
+- ``Superseded  ``       :   Folder containing previous/unused work
 - ``Classification.py `` :   Python file with classifcation class utilised in index.ipynb
 - ``Ensemble.py  ``      :   Python file with ensemble class utilised in index.ipynb
 - ``Fores_trees.pdf ``   :   PDF containing project presentation
