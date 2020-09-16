@@ -33,6 +33,6 @@ The purpose of our analysis is to determine a model based on those categorical f
 - ``Classification.py `` :   Python file with classifcation class utilised in index.ipynb
 - ``Ensemble.py  ``      :   Python file with ensemble class utilised in index.ipynb
 - ``Forest_trees.pdf ``   :   PDF containing project presentation
-- ``READMEmd  ``         :   Markdown file with executive summay of project
+- ``README.md  ``         :   Markdown file with executive summay of project
 - ``covtype.csv  ``      :   CSV file with data used for project
 - ``index.ipynb   ``     :   Python Notebook containing main conent for project (code,visualisations,modelling,evaluation)
