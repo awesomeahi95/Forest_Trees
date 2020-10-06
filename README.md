@@ -1,6 +1,6 @@
 # Forest Trees
 
-This project is a collaboration between Ahilan Srivishnumohan and Abigail Sixto
+This project is a collaboration between Ahilan Srivishnumohan and Abigail Sixto 
 
 ## Analysis
 
