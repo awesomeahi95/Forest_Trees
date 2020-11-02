@@ -12,7 +12,7 @@ The purpose of our analysis is to determine a model based on those categorical f
 
 ## The steps we follow are :
 
-1. Data Understanding
+1. Data Understanding 
 2. Data Visualization
 3. Data Preparation
 4. Modelling
