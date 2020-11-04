@@ -2,7 +2,7 @@
 
 This project is a collaboration between Ahilan Srivishnumohan and Abigail Sixto.
 
-## Analysis
+## Analysis 
 
 The analysis is based on the data published by US Forest Service (USFS). Each observation contains information of type of tree coverage of a (30 x 30 meter cell) at four wilderness areas located in the Roosevelt National Forest of Northern Colorado. Each cell contains a number of features including information about the soil type, elevation, and sunlight conditions, and there are a total of 7 possible types of trees. 
  
